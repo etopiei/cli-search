@@ -5,9 +5,20 @@ int main(int argc, char **argv) {
 	if (argc < 2) {
 			return 0;
 	}
-	std::string urlPart1 = "https://google.com/search?dcr=0&q=";
-	std::string search(argv[1]);
-	for(int i = 2; i < argc; i++) {
+	std::string urlPart1;
+	if(!strcmp(argv[1], "google")) {
+		urlPart1 = "https://google.com/search?dcr=0&q=";
+	} else if(!strcmp(argv[1], "wiki")) {
+			urlPart1 = "https://en.wikipedia.org/w/index.php?search=";
+	} else if(!strcmp(argv[1], "youtube")) {
+			urlPart1 = "https://www.youtube.com/results?search_query=";
+	} else {
+			std::cout << "Invalid option" << std::endl;
+			return 0;
+	}
+
+	std::string search(argv[2]);
+	for(int i = 3; i < argc; i++) {
 			search = search + '+' + argv[i];
 	}
 	for(int i = 0; i < search.length(); i++) {
@@ -15,6 +26,7 @@ int main(int argc, char **argv) {
 				search[i] = '+';
 		}
 	}
+
 	std::string url = urlPart1 + search;
 	std::cout << url << std::endl;
 	int pid = fork();
