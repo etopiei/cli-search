@@ -1,25 +1,50 @@
 #include <iostream>
 #include <unistd.h>
 
+std::string helpMenu() {
+		std::string menu = "Usage: @ [site] 'search term'";
+
+		menu += "\nSearch term can be in quotes or not.\n";
+		menu += "\nSite can be any of the following (ensure to use lowercase):";
+		menu += "\n\tso (stack overflow)";
+		menu += "\n\tgoogle";
+		menu += "\n\twiki (wikipedia)";
+		menu += "\n\tyoutube";
+		menu += "\n\timdb";
+		menu += "\n\tgithub";
+
+		return menu;
+}
+
 int main(int argc, char **argv) {
 	if (argc < 2) {
 			return 0;
 	}
-	std::string urlPart1;
+	std::string urlPart1, name;
 	if(!strcmp(argv[1], "google")) {
 		urlPart1 = "https://google.com/search?dcr=0&q=";
+		name = "Google";
 	} else if(!strcmp(argv[1], "wiki")) {
 			urlPart1 = "https://en.wikipedia.org/w/index.php?search=";
+			name = "Wikipedia";
 	} else if(!strcmp(argv[1], "youtube")) {
 			urlPart1 = "https://www.youtube.com/results?search_query=";
+			name = "YouTube";
 	} else if(!strcmp(argv[1], "imdb")) {
 			urlPart1 = "https://www.imdb.com/find?q=";
+			name = "IMDB";
 	} else if(!strcmp(argv[1], "github")) {
 			urlPart1 = "https://github.com/search?q=";
+			name = "GitHub";
 	} else if(!strcmp(argv[1], "so")) {
 			urlPart1 = "https://stackoverflow.com/search?q=";
+			name = "Stack Overflow";
+	} else if(!strcmp(argv[1], "help")) {
+			std::cout << helpMenu();
+			return 0;
 	} else {
 			std::cout << "Invalid option" << std::endl;
+			std::cout << helpMenu();
 			return 0;
 	}
 
@@ -34,13 +59,12 @@ int main(int argc, char **argv) {
 	}
 
 	std::string url = urlPart1 + search;
-	std::cout << url << std::endl;
 	int pid = fork();
 	if (pid > 0) {
 		int status;
 		waitpid(pid, &status, 0);
 	} else if (pid == 0) {
-		std::cout << "Searching..." << std::endl;
+		std::cout << "*Searching " << name << "*" << std::endl;
 		execlp("open", "open", url.c_str(), NULL);
 	} else {
 		std::cerr << "Failed fork" << std::endl;
