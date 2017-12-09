@@ -1,17 +1,17 @@
-all: @
+all: search
 
-@:
-	g++ -o @ search.cpp
+search:
+	g++ -o search search.cpp
 
 clean:
-	rm @
+	rm search
 
-update: @
-	mv @ ~/scripts/
+update: search
+	mv search ~/scripts/
 
-install: @
+install: search
 	if [ ! -d "~/scripts" ]; then
 		mkdir ~/scripts
 	fi
-	mv @ ~/scripts/
+	mv search ~/scripts/
 	@echo 'export PATH=$$PATH:~/scripts' >> ~/.bashrc
