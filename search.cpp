@@ -16,6 +16,8 @@ int main(int argc, char **argv) {
 			urlPart1 = "https://www.imdb.com/find?q=";
 	} else if(!strcmp(argv[1], "github")) {
 			urlPart1 = "https://github.com/search?q=";
+	} else if(!strcmp(argv[1], "so")) {
+			urlPart1 = "https://stackoverflow.com/search?q=";
 	} else {
 			std::cout << "Invalid option" << std::endl;
 			return 0;
