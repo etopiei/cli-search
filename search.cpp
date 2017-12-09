@@ -12,6 +12,10 @@ std::string helpMenu() {
 		menu += "\n\tyoutube";
 		menu += "\n\timdb";
 		menu += "\n\tgithub";
+		menu += "\n\tfacebook";
+		menu += "\n\tnetflix";
+		menu += "\n\treddit";
+		menu += "\n";
 
 		return menu;
 }
@@ -42,6 +46,15 @@ int main(int argc, char **argv) {
 	} else if(!strcmp(argv[1], "help")) {
 			std::cout << helpMenu();
 			return 0;
+	} else if(!strcmp(argv[1], "facebook")) {
+			urlPart1 = "https://www.facebook.com/search/top?q=";
+			name = "Facebook";
+	} else if(!strcmp(argv[1], "netflix")) {
+			urlPart1 = "https://www.netflix.com/search?q=";
+			name = "Netflix";
+	} else if(!strcmp(argv[1], "reddit")) {
+			urlPart1 = "https://www.reddit.com/search?q=";
+			name = "Reddit";
 	} else {
 			std::cout << "Invalid option" << std::endl;
 			std::cout << helpMenu();
