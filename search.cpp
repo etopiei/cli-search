@@ -12,6 +12,10 @@ int main(int argc, char **argv) {
 			urlPart1 = "https://en.wikipedia.org/w/index.php?search=";
 	} else if(!strcmp(argv[1], "youtube")) {
 			urlPart1 = "https://www.youtube.com/results?search_query=";
+	} else if(!strcmp(argv[1], "imdb")) {
+			urlPart1 = "https://www.imdb.com/find?q=";
+	} else if(!strcmp(argv[1], "github")) {
+			urlPart1 = "https://github.com/search?q=";
 	} else {
 			std::cout << "Invalid option" << std::endl;
 			return 0;
