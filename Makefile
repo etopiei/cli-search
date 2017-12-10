@@ -4,7 +4,7 @@ search:
 	g++ -o search search.cpp
 
 clean:
-	rm search
+	rm ~/scripts/search
 
 update: search
 	mv search ~/scripts/
