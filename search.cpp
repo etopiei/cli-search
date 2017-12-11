@@ -3,6 +3,24 @@
 #include <vector>
 #include <fstream>
 
+void addNewItem() {
+		std::string name, shortcut, url;
+		std::cout << "What is the name of the site (must be all one word): ";
+		std::cin >> name;
+		std::cout << "What shortcut would you like to use (must also not contain spaces): ";
+		std::cin >> shortcut;
+		std::cout << "What is the URL start (eg: https://site.com?query=): ";
+		std::cin >> url;
+
+		//write the new site to file
+		std::ofstream myFile;
+		myFile.open("sites.txt", std::ios_base::app);
+		myFile << shortcut;
+		myFile << name;
+		myFile << url;
+		myFile.close();
+}
+
 std::string helpMenu(std::vector<std::string> *sites) {
 		std::string menu = "Usage: @ [site] 'search term'";
 
@@ -38,6 +56,9 @@ int main(int argc, char **argv) {
 	if(!strcmp(argv[1], "help")) {
 		std::cout << helpMenu(&sites);
 		return 0;
+	} else if(!strcmp(argv[1], "add")) {
+			addNewItem();
+			return 0;
 	} else {
 		int index = -1;
 		for(int i = 0; i < sites.size(); i+=3) {
@@ -46,9 +67,7 @@ int main(int argc, char **argv) {
 			if(siteArgument == sites[i]) {
 					found = true;
 					name = sites[i+1];
-					urlPart1 = sites[i+2];
-			}
-		}
+					urlPart1 = sites[i+2]; } }
 	}
 
 	if(!found) {

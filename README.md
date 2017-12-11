@@ -11,6 +11,12 @@ Or searching github for this repository:
 
 	$ search github cli-search etopiei
 
+You can also add new sites to search, this is done by simply entering the command:
+
+	$ search add
+
+and then following the prompts.
+
 ## Installing
 
 To install this simply clone it:

@@ -9,7 +9,6 @@ clean:
 
 update: search
 	mv search ~/scripts/
-	cp sites.txt ~/scripts/
 
 install: search
 	if [ ! -d "~/scripts" ]; then
