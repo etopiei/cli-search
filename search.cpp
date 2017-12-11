@@ -1,20 +1,16 @@
 #include <iostream>
 #include <unistd.h>
+#include <vector>
+#include <fstream>
 
-std::string helpMenu() {
+std::string helpMenu(std::vector<std::string> *sites) {
 		std::string menu = "Usage: @ [site] 'search term'";
 
 		menu += "\nSearch term can be in quotes or not.\n";
 		menu += "\nSite can be any of the following (ensure to use lowercase):";
-		menu += "\n\tso (stack overflow)";
-		menu += "\n\tgoogle";
-		menu += "\n\twiki (wikipedia)";
-		menu += "\n\tyoutube";
-		menu += "\n\timdb";
-		menu += "\n\tgithub";
-		menu += "\n\tfacebook";
-		menu += "\n\tnetflix";
-		menu += "\n\treddit";
+		for(int i = 0; i < sites->size(); i+=3) {
+				menu += "\n\t" + (*sites)[i]; 
+		}
 		menu += "\n";
 
 		return menu;
@@ -24,44 +20,45 @@ int main(int argc, char **argv) {
 	if (argc < 2) {
 			return 0;
 	}
+
+	//load in urls and names from file
+	std::ifstream confFile;
+	confFile.open("sites.txt");
+
+	//file will be structured with Name\nURL Start\n etc...
+	std::vector<std::string> sites;
+	std::string fileData;
+	for(int n; confFile >> fileData;) {
+			sites.push_back(fileData);
+	}
+
+	bool found = false;
 	std::string urlPart1, name;
-	if(!strcmp(argv[1], "google")) {
-		urlPart1 = "https://google.com/search?dcr=0&q=";
-		name = "Google";
-	} else if(!strcmp(argv[1], "wiki")) {
-			urlPart1 = "https://en.wikipedia.org/w/index.php?search=";
-			name = "Wikipedia";
-	} else if(!strcmp(argv[1], "youtube")) {
-			urlPart1 = "https://www.youtube.com/results?search_query=";
-			name = "YouTube";
-	} else if(!strcmp(argv[1], "imdb")) {
-			urlPart1 = "https://www.imdb.com/find?q=";
-			name = "IMDB";
-	} else if(!strcmp(argv[1], "github")) {
-			urlPart1 = "https://github.com/search?q=";
-			name = "GitHub";
-	} else if(!strcmp(argv[1], "so")) {
-			urlPart1 = "https://stackoverflow.com/search?q=";
-			name = "Stack Overflow";
-	} else if(!strcmp(argv[1], "help")) {
-			std::cout << helpMenu();
-			return 0;
-	} else if(!strcmp(argv[1], "facebook")) {
-			urlPart1 = "https://www.facebook.com/search/top?q=";
-			name = "Facebook";
-	} else if(!strcmp(argv[1], "netflix")) {
-			urlPart1 = "https://www.netflix.com/search?q=";
-			name = "Netflix";
-	} else if(!strcmp(argv[1], "reddit")) {
-			urlPart1 = "https://www.reddit.com/search?q=";
-			name = "Reddit";
+
+	if(!strcmp(argv[1], "help")) {
+		std::cout << helpMenu(&sites);
+		return 0;
 	} else {
+		int index = -1;
+		for(int i = 0; i < sites.size(); i+=3) {
+			//get the correct details if the name matches.
+			std::string siteArgument = argv[1];
+			if(siteArgument == sites[i]) {
+					found = true;
+					name = sites[i+1];
+					urlPart1 = sites[i+2];
+			}
+		}
+	}
+
+	if(!found) {
 			std::cout << "Invalid option" << std::endl;
-			std::cout << helpMenu();
+			std::cout << helpMenu(&sites) << std::endl;
 			return 0;
 	}
 
 	std::string search(argv[2]);
+	//here ensure + character and others like it are escaped (eg. searching c++)
 	for(int i = 3; i < argc; i++) {
 			search = search + '+' + argv[i];
 	}

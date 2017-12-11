@@ -5,13 +5,16 @@ search:
 
 clean:
 	rm ~/scripts/search
+	rm ~/scripts/sites.txt
 
 update: search
 	mv search ~/scripts/
+	cp sites.txt ~/scripts/
 
 install: search
 	if [ ! -d "~/scripts" ]; then
 		mkdir ~/scripts
 	fi
 	mv search ~/scripts/
+	cp sites.txt ~/scripts/
 	@echo 'export PATH=$$PATH:~/scripts' >> ~/.bashrc
