@@ -14,20 +14,21 @@ void addNewItem() {
 
 		//write the new site to file
 		std::ofstream myFile;
-		myFile.open("sites.txt", std::ios_base::app);
-		myFile << shortcut;
-		myFile << name;
-		myFile << url;
+		std::string home = getenv("HOME");
+		myFile.open((home + "/scripts/sites.txt").c_str(), std::ios_base::app);
+		myFile << shortcut << std::endl;
+		myFile << name << std::endl;
+		myFile << url << std::endl;
 		myFile.close();
 }
 
 std::string helpMenu(std::vector<std::string> *sites) {
-		std::string menu = "Usage: @ [site] 'search term'";
+		std::string menu = "Usage: search [site] 'search term'";
 
 		menu += "\nSearch term can be in quotes or not.\n";
 		menu += "\nSite can be any of the following (ensure to use lowercase):";
 		for(int i = 0; i < sites->size(); i+=3) {
-				menu += "\n\t" + (*sites)[i]; 
+				menu += "\n\t" + (*sites)[i] + "- (" + (*sites)[i+1] + ")"; 
 		}
 		menu += "\n";
 
@@ -41,7 +42,8 @@ int main(int argc, char **argv) {
 
 	//load in urls and names from file
 	std::ifstream confFile;
-	confFile.open("sites.txt");
+	std::string home = getenv("HOME");
+	confFile.open((home + "/scripts/sites.txt").c_str());
 
 	//file will be structured with Name\nURL Start\n etc...
 	std::vector<std::string> sites;

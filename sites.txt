@@ -25,3 +25,9 @@ https://www.netflix.com/search?q=
 reddit
 Reddit
 https://www.reddit.com/search?q=
+twitter
+Twitter
+https://twitter.com/search?q=
+dd
+DuckDuckGo
+https://duckduckgo.com/?q=
