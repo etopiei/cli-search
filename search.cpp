@@ -92,9 +92,9 @@ int main(int argc, char **argv) {
 
 	int command = 0;
 
-	int ret = system("xdg-open http://www.google.com > /dev/null 2>&1");
+	int ret = system("xdg-open --help > /dev/null 2>&1");
 	if(ret != 0) {
-		ret = system("open https://www.google.com > /dev/null 2>&1");
+		ret = system("open --help > /dev/null 2>&1");
 		if( ret == 0) {
 			//set command to xdeg-open
 			command = 1;
