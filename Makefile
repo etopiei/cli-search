@@ -11,5 +11,8 @@ update: search
 	mv search ~/scripts/
 
 install: search
+	mkdir -p ~/scripts
 	mv search ~/scripts
 	cp sites.txt ~/scripts
+	@echo 'export PATH=$$PATH:~/scripts' >> ~/.bashrc
+	@echo 'source ~/.bashrc'

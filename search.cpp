@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <vector>
 #include <fstream>
+#include <sys/wait.h>
+#include <string.h>
 
 void addNewItem() {
 		std::string name, shortcut, url;
@@ -28,7 +30,7 @@ std::string helpMenu(std::vector<std::string> *sites) {
 		menu += "\nSearch term can be in quotes or not.\n";
 		menu += "\nSite can be any of the following (ensure to use lowercase):";
 		for(int i = 0; i < sites->size(); i+=3) {
-				menu += "\n\t" + (*sites)[i] + "- (" + (*sites)[i+1] + ")"; 
+				menu += "\n\t" + (*sites)[i] + " - (" + (*sites)[i+1] + ")"; 
 		}
 		menu += "\n";
 
@@ -45,7 +47,6 @@ int main(int argc, char **argv) {
 	std::string home = getenv("HOME");
 	confFile.open((home + "/scripts/sites.txt").c_str());
 
-	//file will be structured with Name\nURL Start\n etc...
 	std::vector<std::string> sites;
 	std::string fileData;
 	for(int n; confFile >> fileData;) {
@@ -89,6 +90,20 @@ int main(int argc, char **argv) {
 		}
 	}
 
+	int command = 0;
+
+	int ret = system("xdg-open http://www.google.com > /dev/null 2>&1");
+	if(ret != 0) {
+		ret = system("open https://www.google.com > /dev/null 2>&1");
+		if( ret == 0) {
+			//set command to xdeg-open
+			command = 1;
+		} else {
+			//set command to start
+			command = 2;
+		}
+	}
+
 	std::string url = urlPart1 + search;
 	int pid = fork();
 	if (pid > 0) {
@@ -96,7 +111,17 @@ int main(int argc, char **argv) {
 		waitpid(pid, &status, 0);
 	} else if (pid == 0) {
 		std::cout << "*Searching " << name << "*" << std::endl;
-		execlp("open", "open", url.c_str(), NULL);
+		switch(command) {
+			case 0:
+				execlp("xdg-open", "xdg-open", url.c_str(), NULL);
+				break;
+			case 1:
+				execlp("open", "open", url.c_str(), NULL);
+				break;
+			case 2:
+				execlp("start", "start", url.c_str(), NULL);
+				break;
+		}
 	} else {
 		std::cerr << "Failed fork" << std::endl;
 	}
