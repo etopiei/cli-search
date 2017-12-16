@@ -80,7 +80,6 @@ int main(int argc, char **argv) {
 	}
 
 	std::string search(argv[2]);
-	//here ensure + character and others like it are escaped (eg. searching c++)
 	for(int i = 3; i < argc; i++) {
 			search = search + '+' + argv[i];
 	}
@@ -92,17 +91,9 @@ int main(int argc, char **argv) {
 
 	int command = 0;
 
-	int ret = system("xdg-open --help > /dev/null 2>&1");
-	if(ret != 0) {
-		ret = system("open --help > /dev/null 2>&1");
-		if( ret == 0) {
-			//set command to xdeg-open
-			command = 1;
-		} else {
-			//set command to start
-			command = 2;
-		}
-	}
+	#ifdef __APPLE__
+		command = 1;
+	#endif
 
 	std::string url = urlPart1 + search;
 	int pid = fork();
@@ -117,9 +108,6 @@ int main(int argc, char **argv) {
 				break;
 			case 1:
 				execlp("open", "open", url.c_str(), NULL);
-				break;
-			case 2:
-				execlp("start", "start", url.c_str(), NULL);
 				break;
 		}
 	} else {
